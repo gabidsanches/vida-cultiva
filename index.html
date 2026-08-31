@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fenda do Biquíni+ | A Grande Missão</title>
+<meta name="description" content="Episódio inédito. Assista agora.">
+<meta name="theme-color" content="#03141d">
+
+<!-- =========================================================
+     PRÉ-VISUALIZAÇÃO NO WHATSAPP (opcional)
+     Se for hospedar o site, cole aqui o link de uma imagem
+     para aparecer a miniatura quando enviar o link.
+     ========================================================= -->
+<meta property="og:title" content="Fenda do Biquíni+ — episódio inédito">
+<meta property="og:description" content="▶ Assistir agora">
+<!-- <meta property="og:image" content="COLE_AQUI_O_LINK_DA_IMAGEM_DE_CAPA.jpg"> -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   1. TOKENS — paleta "fundo do mar à noite"
+   ========================================================= */
+:root{
+  --agua-fundo:#03141d;
+  --agua-meio:#0a2b3a;
+  --agua-alto:#12455a;
+  --abacaxi:#ffc531;
+  --coral:#ff5c7a;
+  --espuma:#5fe3c8;
+  --areia:#f6ead2;
+  --texto-suave:#9fbccb;
+
+  --display:'Anton', 'Arial Narrow', Impact, sans-serif;
+  --corpo:'Fredoka', 'Trebuchet MS', system-ui, sans-serif;
+
+  --borda-suave:1px solid rgba(159,188,203,.22);
+  --largura:min(1180px, 92vw);
+}
+
+/* =========================================================
+   2. BASE
+   ========================================================= */
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--agua-fundo);
+  color:var(--areia);
+  font-family:var(--corpo);
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block;}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;}
+h1,h2,h3{margin:0;font-weight:400;}
+p{margin:0;}
+
+:focus-visible{
+  outline:3px solid var(--espuma);
+  outline-offset:3px;
+  border-radius:6px;
+}
+
+/* Bolhas subindo no fundo da página inteira */
+.bolhas{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bolha{
+  position:absolute;bottom:-60px;border-radius:50%;
+  border:1px solid rgba(95,227,200,.35);
+  background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.5), rgba(95,227,200,.05) 60%);
+  animation:subir linear infinite;
+}
+@keyframes subir{
+  from{transform:translateY(0) translateX(0);opacity:0;}
+  12%{opacity:.75;}
+  to{transform:translateY(-115vh) translateX(24px);opacity:0;}
+}
+
+/* =========================================================
+   3. TELA 1 — INTERFACE DE STREAMING
+   ========================================================= */
+#tela-streaming{position:relative;z-index:1;transition:opacity .9s ease, filter .9s ease;}
+#tela-streaming.saindo{opacity:0;filter:blur(6px);pointer-events:none;}
+
+.topo{
+  position:absolute;top:0;left:0;right:0;z-index:5;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:18px calc((100vw - var(--largura)) / 2);
+  background:linear-gradient(180deg, rgba(3,20,29,.92), transparent);
+}
+.logo{
+  font-family:var(--corpo);font-weight:700;
+  font-size:clamp(1.05rem, 3.4vw, 1.5rem);
+  letter-spacing:-.02em;color:var(--abacaxi);
+  text-shadow:0 2px 0 rgba(0,0,0,.45);
+}
+.logo span{color:var(--coral);}
+.perfil{
+  display:flex;align-items:center;gap:10px;
+  font-size:.85rem;color:var(--texto-suave);
+}
+.perfil__avatar{
+  width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(140deg,var(--abacaxi),var(--coral));
+  display:grid;place-items:center;font-size:1rem;
+}
+
+/* --- Hero --- */
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;align-items:flex-end;
+  padding:120px 0 48px;
+  overflow:hidden;
+}
+.hero__fundo{position:absolute;inset:0;z-index:0;}
+
+/* Placeholder que aparece caso a foto da Sandy ainda não esteja no ar */
+.hero__fundo::after{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(70% 90% at 78% 30%, rgba(255,197,49,.28), transparent 62%),
+    radial-gradient(60% 80% at 20% 80%, rgba(95,227,200,.18), transparent 65%),
+    linear-gradient(160deg, var(--agua-alto), var(--agua-fundo) 70%);
+}
+.hero__fundo img{
+  position:absolute;inset:0;z-index:1;
+  width:100%;height:100%;object-fit:cover;object-position:72% 28%;
+}
+.hero__veu{
+  position:absolute;inset:0;z-index:2;
+  background:
+    linear-gradient(90deg, var(--agua-fundo) 4%, rgba(3,20,29,.82) 42%, rgba(3,20,29,.15) 78%),
+    linear-gradient(0deg, var(--agua-fundo) 2%, transparent 45%);
+}
+.hero__dica{
+  position:absolute;z-index:3;right:4vw;top:24%;
+  max-width:230px;padding:14px 16px;border-radius:14px;
+  border:2px dashed rgba(255,197,49,.55);
+  background:rgba(3,20,29,.55);
+  font-size:.8rem;line-height:1.45;color:var(--abacaxi);
+}
+
+.hero__conteudo{
+  position:relative;z-index:4;
+  width:var(--largura);margin:0 auto;
+  max-width:none;
+}
+.selo{
+  display:inline-flex;align-items:center;gap:9px;
+  font-size:.78rem;letter-spacing:.14em;color:var(--espuma);
+  margin-bottom:14px;
+}
+.selo::before{
+  content:"";width:26px;height:2px;background:var(--espuma);
+}
+.hero__titulo{
+  font-family:var(--display);
+  font-size:clamp(2.4rem, 8.2vw, 5.6rem);
+  line-height:.95;
+  letter-spacing:.005em;
+  text-transform:uppercase;
+  max-width:14ch;
+  text-shadow:0 6px 26px rgba(0,0,0,.55);
+}
+.hero__titulo em{
+  display:block;font-style:normal;
+  color:var(--abacaxi);
+}
+.hero__meta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+  margin:20px 0 14px;font-size:.9rem;color:var(--texto-suave);
+}
+.classificacao{
+  display:inline-grid;place-items:center;
+  width:26px;height:26px;border-radius:5px;
+  background:var(--coral);color:#2a0410;font-weight:700;font-size:.85rem;
+}
+.hero__sinopse{
+  max-width:56ch;font-size:clamp(.98rem,2.3vw,1.1rem);
+  line-height:1.6;color:#dce9ef;
+}
+.hero__acoes{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:15px 30px;border-radius:999px;
+  font-weight:600;font-size:clamp(1rem,2.6vw,1.15rem);
+  transition:transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+.btn--play{
+  background:var(--abacaxi);color:#22160a;
+  box-shadow:0 12px 34px rgba(255,197,49,.28);
+}
+.btn--play:hover{transform:translateY(-2px) scale(1.02);}
+.btn--info{
+  background:rgba(246,234,210,.14);color:var(--areia);
+  border:var(--borda-suave);backdrop-filter:blur(6px);
+}
+.btn--info:hover{background:rgba(246,234,210,.24);}
+.btn--play::after{
+  content:"";position:absolute;
+}
+/* pulso discreto só no botão principal, para guiar o olhar */
+.btn--play{position:relative;animation:pulso 2.8s ease-in-out infinite;}
+@keyframes pulso{
+  0%,100%{box-shadow:0 12px 34px rgba(255,197,49,.22);}
+  50%{box-shadow:0 12px 46px rgba(255,197,49,.5);}
+}
+
+/* --- Fileira de "outros episódios" --- */
+.fileira{width:var(--largura);margin:0 auto;padding:8px 0 70px;position:relative;z-index:4;}
+.fileira__titulo{
+  font-size:1.05rem;font-weight:600;margin-bottom:14px;color:var(--areia);
+}
+.fileira__trilho{
+  display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;
+  scroll-snap-type:x mandatory;scrollbar-width:thin;
+}
+.card{
+  flex:0 0 clamp(190px, 44vw, 250px);
+  scroll-snap-align:start;
+  border-radius:14px;overflow:hidden;
+  border:var(--borda-suave);
+  background:linear-gradient(155deg, var(--agua-meio), #061c27);
+  transition:transform .2s ease, border-color .2s ease;
+}
+.card:hover{transform:translateY(-4px);border-color:rgba(255,197,49,.5);}
+.card__capa{
+  height:112px;display:grid;place-items:center;font-size:2rem;
+  background:linear-gradient(135deg, rgba(95,227,200,.22), rgba(255,92,122,.22));
+}
+.card__texto{padding:12px 14px 16px;}
+.card__texto strong{display:block;font-weight:600;font-size:.95rem;line-height:1.3;}
+.card__texto span{font-size:.78rem;color:var(--texto-suave);}
+
+/* =========================================================
+   4. MODAL "MAIS INFORMAÇÕES"
+   ========================================================= */
+.modal{
+  position:fixed;inset:0;z-index:60;
+  display:grid;place-items:center;padding:20px;
+  background:rgba(2,10,15,.78);backdrop-filter:blur(4px);
+  opacity:0;visibility:hidden;transition:opacity .3s ease, visibility .3s;
+}
+.modal.aberto{opacity:1;visibility:visible;}
+.modal__caixa{
+  width:min(520px,100%);border-radius:20px;padding:26px;
+  background:linear-gradient(165deg,#0d3245,#061a24);
+  border:var(--borda-suave);
+  transform:translateY(14px) scale(.97);transition:transform .3s ease;
+}
+.modal.aberto .modal__caixa{transform:none;}
+.modal__caixa h3{font-family:var(--display);font-size:1.6rem;text-transform:uppercase;margin-bottom:14px;color:var(--abacaxi);}
+.ficha{display:grid;gap:10px;font-size:.94rem;line-height:1.5;}
+.ficha div{display:flex;gap:8px;}
+.ficha dt{color:var(--texto-suave);min-width:96px;}
+.modal__fechar{
+  margin-top:22px;padding:12px 22px;border-radius:999px;
+  background:var(--areia);color:#12222a;font-weight:600;width:100%;
+}
+
+/* =========================================================
+   5. ABERTURA (a "vinheta" entre as telas)
+   ========================================================= */
+#vinheta{
+  position:fixed;inset:0;z-index:80;display:none;
+  place-items:center;background:#000;
+}
+#vinheta.tocando{display:grid;}
+.vinheta__marca{
+  font-family:var(--corpo);font-weight:700;
+  font-size:clamp(2rem,11vw,5rem);color:var(--abacaxi);
+  letter-spacing:-.03em;
+  animation:marcaEntra 2.1s cubic-bezier(.2,.7,.2,1) forwards;
+}
+.vinheta__marca span{color:var(--coral);}
+@keyframes marcaEntra{
+  0%{transform:scale(1.35);opacity:0;filter:blur(10px);}
+  30%{opacity:1;filter:blur(0);}
+  70%{transform:scale(1);opacity:1;}
+  100%{transform:scale(1.06);opacity:0;}
+}
+
+/* =========================================================
+   6. TELA 2 — A REVELAÇÃO
+   ========================================================= */
+#tela-revelacao{display:none;position:relative;z-index:1;}
+#tela-revelacao.ativa{display:block;}
+
+.cena{
+  min-height:100svh;
+  display:grid;place-items:center;
+  padding:90px 5vw;
+  text-align:center;
+}
+.cena__interno{
+  width:min(760px,100%);
+  opacity:0;transform:translateY(26px);
+  transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1);
+}
+.cena.visivel .cena__interno{opacity:1;transform:none;}
+
+.fala{
+  font-family:var(--display);
+  font-size:clamp(1.75rem,6.4vw,3.4rem);
+  line-height:1.12;text-transform:uppercase;
+  letter-spacing:.01em;
+}
+.fala--miuda{
+  font-family:var(--corpo);font-weight:500;text-transform:none;
+  font-size:clamp(1.05rem,3.4vw,1.35rem);
+  color:var(--texto-suave);margin-bottom:18px;letter-spacing:0;
+}
+
+/* Cena 2 — a notícia */
+#cena-noticia{background:linear-gradient(180deg,#03141d, #0b3346 45%, #03141d);}
+.noticia{
+  font-family:var(--display);
+  font-size:clamp(2.1rem,10vw,5.4rem);
+  line-height:.98;text-transform:uppercase;
+  background:linear-gradient(100deg,var(--abacaxi),var(--coral) 45%,var(--espuma));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 18px rgba(0,0,0,.5));
+}
+.noticia small{
+  display:block;font-family:var(--corpo);font-weight:600;
+  font-size:clamp(1rem,3.2vw,1.3rem);
+  color:var(--areia);-webkit-text-fill-color:var(--areia);
+  margin-top:20px;letter-spacing:0;text-transform:none;
+}
+#confete{position:fixed;inset:0;z-index:40;pointer-events:none;}
+
+/* Molduras de foto / GIF */
+.moldura{
+  position:relative;margin:0;border-radius:16px;overflow:hidden;
+  border:2px dashed rgba(159,188,203,.45);
+  background:linear-gradient(150deg, var(--agua-meio), #061c27);
+  min-height:190px;display:grid;place-items:center;
+}
+.moldura img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;
+}
+.moldura__dica{
+  padding:18px;font-size:.88rem;line-height:1.4;color:var(--texto-suave);z-index:1;
+}
+.moldura__dica strong{display:block;color:var(--abacaxi);font-weight:600;margin-bottom:4px;}
+
+.moldura--larga{
+  max-width:640px;margin:0 auto 30px;aspect-ratio:16/9;
+  border-color:rgba(255,197,49,.5);
+}
+.moldura--gif{max-width:420px;margin:0 auto 24px;aspect-ratio:1/1;}
+
+/* Cena final */
+#cena-final{
+  background:radial-gradient(90% 70% at 50% 20%, rgba(255,197,49,.16), transparent 60%), var(--agua-fundo);
+}
+.final__texto{
+  font-size:clamp(1.1rem,3.6vw,1.45rem);line-height:1.65;margin-top:22px;
+}
+.final__assinatura{
+  font-family:var(--display);font-size:clamp(1.6rem,5.4vw,2.6rem);
+  color:var(--coral);margin-top:22px;text-transform:uppercase;
+}
+.rodape{
+  padding:0 5vw 70px;text-align:center;color:var(--texto-suave);font-size:.86rem;
+}
+.rodape button{
+  margin-top:14px;padding:12px 26px;border-radius:999px;
+  border:var(--borda-suave);color:var(--areia);
+}
+
+/* =========================================================
+   7. RESPONSIVO + ACESSIBILIDADE
+   ========================================================= */
+@media (max-width:720px){
+  .hero{padding:104px 0 34px;}
+  .hero__veu{background:linear-gradient(0deg, var(--agua-fundo) 16%, rgba(3,20,29,.55) 58%, rgba(3,20,29,.25));}
+  .hero__fundo img{object-position:64% 22%;}
+  .hero__dica{position:static;max-width:none;margin-bottom:18px;}
+  .hero__titulo{max-width:none;}
+  .btn{flex:1 1 100%;justify-content:center;}
+  .ficha dt{min-width:82px;}
+  .cena{padding:70px 6vw;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.15s !important;}
+  html{scroll-behavior:auto;}
+  .cena__interno{opacity:1;transform:none;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Bolhas decorativas (geradas no JS) -->
+<div class="bolhas" id="bolhas" aria-hidden="true"></div>
+
+<!-- =========================================================
+     TELA 1 — INTERFACE DE STREAMING
+     ========================================================= -->
+<main id="tela-streaming">
+
+  <header class="topo">
+    <div class="logo">FENDA DO BIQUÍNI<span>+</span></div>
+    <div class="perfil">
+      <span>Perfil: Mãe</span>
+      <div class="perfil__avatar" aria-hidden="true">🐚</div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero__fundo">
+      <!-- =====================================================
+           TROQUE AQUI ➊ — IMAGEM DE FUNDO (SANDY BOCHECHAS)
+           Cole o link da imagem da Sandy (de cara brava /
+           determinada / com prancheta) no src abaixo.
+           Dica: use uma imagem deitada (horizontal), grande.
+           Se o link estiver vazio, o fundo bonito de degradê
+           aparece no lugar automaticamente.
+           ===================================================== -->
+      <img src="" alt="Sandy Bochechas de prancheta em mãos"
+           onerror="this.remove()" onload="document.getElementById('dica-hero').remove()">
+      <div class="hero__veu"></div>
+    </div>
+
+    <p class="hero__dica" id="dica-hero">
+      📌 Cole aqui o link da foto da Sandy (procure no código por “TROQUE AQUI ➊”).
+    </p>
+
+    <div class="hero__conteudo">
+      <p class="selo">Episódio inédito • Só na Fenda do Biquíni+</p>
+
+      <h1 class="hero__titulo">
+        A Grande Missão de Trade Marketing:
+        <em>Operação Pão de Queijo</em>
+      </h1>
+
+      <div class="hero__meta">
+        <span class="classificacao" title="Classificação indicativa">M</span>
+        <span>2026</span>
+        <span>•</span>
+        <span>1 temporada</span>
+        <span>•</span>
+        <span>Aventura, Drama familiar, Comédia</span>
+      </div>
+
+      <p class="hero__sinopse">
+        Neste episódio inédito, nossa heroína texana/paulista arruma as malas para
+        desbravar um novo território, conquistar os mercados no campo e provar que
+        manda em tudo. Classificação: M (para mães que vão chorar de saudade).
+      </p>
+
+      <div class="hero__acoes">
+        <button class="btn btn--play" id="btn-assistir">▶ Assistir agora</button>
+        <button class="btn btn--info" id="btn-info">Mais informações</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="fileira">
+    <h2 class="fileira__titulo">Porque você assistiu “Filha Crescendo Rápido Demais”</h2>
+    <div class="fileira__trilho">
+      <article class="card">
+        <div class="card__capa" aria-hidden="true">🥋</div>
+        <div class="card__texto">
+          <strong>Karatê e Malas</strong>
+          <span>T1 • Ep. 4</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__capa" aria-hidden="true">🧀</div>
+        <div class="card__texto">
+          <strong>A Receita Secreta do Pão de Queijo</strong>
+          <span>T1 • Ep. 5</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__capa" aria-hidden="true">📦</div>
+        <div class="card__texto">
+          <strong>Mudança em Três Caixas</strong>
+          <span>T1 • Ep. 6</span>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card__capa" aria-hidden="true">📞</div>
+        <div class="card__texto">
+          <strong>Videochamada Todo Domingo</strong>
+          <span>Renovada para mil temporadas</span>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<!-- Modal -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+  <div class="modal__caixa">
+    <h3 id="modal-titulo">Sobre o episódio</h3>
+    <dl class="ficha">
+      <div><dt>Elenco</dt><dd>Uma filha determinada e uma mãe que fingiu não desconfiar de nada.</dd></div>
+      <div><dt>Direção</dt><dd>O destino, com consultoria da Sandy Bochechas.</dd></div>
+      <div><dt>Gravado em</dt><dd>São Paulo. Continua em Belo Horizonte.</dd></div>
+      <div><dt>Aviso</dt><dd>Contém cenas de emoção intensa e uso excessivo de lenço de papel.</dd></div>
+    </dl>
+    <button class="modal__fechar" id="btn-fechar-modal">Voltar</button>
+  </div>
+</div>
+
+<!-- Vinheta de abertura -->
+<div id="vinheta" aria-hidden="true">
+  <div class="vinheta__marca">FB<span>+</span></div>
+</div>
+
+<canvas id="confete" aria-hidden="true"></canvas>
+
+<!-- =========================================================
+     TELA 2 — A REVELAÇÃO
+     ========================================================= -->
+<div id="tela-revelacao">
+
+  <!-- CENA 1 -->
+  <section class="cena" style="background:#000;">
+    <div class="cena__interno">
+      <p class="fala">Mãe, sabe aquele sonho de trabalhar com Trade Marketing no campo?</p>
+    </div>
+  </section>
+
+  <!-- CENA 2 -->
+  <section class="cena" id="cena-noticia">
+    <div class="cena__interno">
+      <h2 class="noticia">
+        Ele aconteceu! Estou me mudando para Belo Horizonte!
+        <small>Novo emprego, novo estado, mesma filha te enchendo o saco.</small>
+      </h2>
+    </div>
+  </section>
+
+  <!-- CENA 3 -->
+  <section class="cena">
+    <div class="cena__interno">
+      <!-- =====================================================
+           TROQUE AQUI ➋ — IMAGEM DAS TRÊS CASINHAS
+           A imagem clássica do abacaxi, da casa do Lula Molusco
+           e da pedra do Patrick (a mesma referência da tatuagem).
+           Cole o link no src abaixo — de preferência uma imagem
+           deitada (horizontal).
+           ===================================================== -->
+      <figure class="moldura moldura--larga">
+        <img src="" alt="As três casas vizinhas da Fenda do Biquíni" onerror="this.remove()">
+        <figcaption class="moldura__dica"><strong>Imagem das três casinhas</strong>abacaxi, casa do Lula Molusco e a pedra do Patrick</figcaption>
+      </figure>
+
+      <p class="fala fala--miuda">Eu ainda não sei qual vai ser a minha casa nova…</p>
+      <p class="fala">Mas não importa para onde eu vá, levo a nossa tatuagem comigo para lembrar de onde eu vim.</p>
+    </div>
+  </section>
+
+  <!-- CENA 4 -->
+  <section class="cena">
+    <div class="cena__interno">
+      <!-- =====================================================
+           TROQUE AQUI ➌ — GIF DO BOB ESPONJA CHORANDO
+           (episódio "Texas"). Pegue o link direto do .gif no
+           Giphy/Tenor: botão de compartilhar → copiar link da
+           imagem (tem que terminar em .gif) e cole no src.
+           ===================================================== -->
+      <figure class="moldura moldura--gif">
+        <img src="" alt="Personagem chorando rios de lágrimas" onerror="this.remove()">
+        <figcaption class="moldura__dica"><strong>GIF do choro</strong>Bob Esponja chorando rios de lágrimas (episódio “Texas”)</figcaption>
+      </figure>
+      <p class="fala">Eu sei que você vai ficar exatamente assim…</p>
+    </div>
+  </section>
+
+  <!-- CENA 5 -->
+  <section class="cena" id="cena-final">
+    <div class="cena__interno">
+      <!-- =====================================================
+           TROQUE AQUI ➍ — GIF/IMAGEM DO ABRAÇO
+           Bob Esponja abraçando a Sandy ou sorrindo orgulhoso.
+           ===================================================== -->
+      <figure class="moldura moldura--gif">
+        <img src="https://tenor.com/pt-BR/view/spongebob-squarepants-nickelodeon-hug-hugs-gif-5752945" alt="Abraço apertado entre amigos" onerror="this.remove()">
+        <figcaption class="moldura__dica"><strong>GIF do abraço</strong>Bob Esponja abraçando a Sandy / sorrindo orgulhoso</figcaption>
+      </figure>
+
+      <p class="final__texto">
+        …Mas eu sei que, no fundo, você está torcendo por mim.<br>
+        Essa conquista é nossa!
+      </p>
+      <p class="final__assinatura">Te amo, mãe! 💛</p>
+    </div>
+  </section>
+
+  <footer class="rodape">
+    <p>Próximo episódio: a sua primeira visita em BH.</p>
+    <button id="btn-rever">Ver de novo desde o começo</button>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   1. BOLHAS DE FUNDO
+   ========================================================= */
+(function criarBolhas(){
+  const palco = document.getElementById('bolhas');
+  const total = window.innerWidth < 700 ? 12 : 22;
+  for(let i = 0; i < total; i++){
+    const b = document.createElement('span');
+    const tamanho = 6 + Math.random() * 26;
+    b.className = 'bolha';
+    b.style.width = b.style.height = tamanho + 'px';
+    b.style.left = Math.random() * 100 + 'vw';
+    b.style.animationDuration = (11 + Math.random() * 16) + 's';
+    b.style.animationDelay = (Math.random() * 14) + 's';
+    palco.appendChild(b);
+  }
+})();
+
+/* =========================================================
+   2. MODAL "MAIS INFORMAÇÕES"
+   ========================================================= */
+const modal = document.getElementById('modal');
+document.getElementById('btn-info').addEventListener('click', () => {
+  modal.classList.add('aberto');
+  document.getElementById('btn-fechar-modal').focus();
+});
+document.getElementById('btn-fechar-modal').addEventListener('click', fecharModal);
+modal.addEventListener('click', e => { if (e.target === modal) fecharModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
+function fecharModal(){ modal.classList.remove('aberto'); }
+
+/* =========================================================
+   3. TRANSIÇÃO TELA 1 → VINHETA → TELA 2
+   ========================================================= */
+const telaStreaming = document.getElementById('tela-streaming');
+const telaRevelacao = document.getElementById('tela-revelacao');
+const vinheta = document.getElementById('vinheta');
+
+document.getElementById('btn-assistir').addEventListener('click', () => {
+  tocarVinhetaSonora();
+  telaStreaming.classList.add('saindo');
+
+  setTimeout(() => {
+    telaStreaming.style.display = 'none';
+    vinheta.classList.add('tocando');
+  }, 850);
+
+  setTimeout(() => {
+    vinheta.classList.remove('tocando');
+    telaRevelacao.classList.add('ativa');
+    window.scrollTo(0, 0);
+    observarCenas();
+  }, 2900);
+});
+
+/* Som de abertura, dois acordes. Falha em silêncio se o
+   navegador bloquear o áudio — nada quebra por causa disso. */
+function tocarVinhetaSonora(){
+  try{
+    const Audio = window.AudioContext || window.webkitAudioContext;
+    if (!Audio) return;
+    const ctx = new Audio();
+    const nota = (freq, inicio, duracao) => {
+      const osc = ctx.createOscillator();
+      const vol = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      vol.gain.setValueAtTime(0.0001, ctx.currentTime + inicio);
+      vol.gain.exponentialRampToValueAtTime(0.28, ctx.currentTime + inicio + 0.05);
+      vol.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + inicio + duracao);
+      osc.connect(vol).connect(ctx.destination);
+      osc.start(ctx.currentTime + inicio);
+      osc.stop(ctx.currentTime + inicio + duracao + 0.05);
+    };
+    nota(147, 0.9, 0.28);   // "ta"
+    nota(110, 1.2, 0.9);    // "dum"
+  }catch(e){ /* sem som, sem problema */ }
+}
+
+/* =========================================================
+   4. REVELAÇÃO DAS CENAS AO ROLAR
+   ========================================================= */
+let observador;
+function observarCenas(){
+  const cenas = document.querySelectorAll('#tela-revelacao .cena');
+
+  if (!('IntersectionObserver' in window)){
+    cenas.forEach(c => c.classList.add('visivel'));
+    return;
+  }
+
+  observador = new IntersectionObserver((entradas) => {
+    entradas.forEach(entrada => {
+      if (!entrada.isIntersecting) return;
+      entrada.target.classList.add('visivel');
+      if (entrada.target.id === 'cena-noticia') soltarConfete();
+      observador.unobserve(entrada.target);
+    });
+  }, { threshold: 0.35 });
+
+  cenas.forEach(c => observador.observe(c));
+}
+
+/* =========================================================
+   5. CONFETES (cena da notícia)
+   ========================================================= */
+const canvas = document.getElementById('confete');
+const ctx2d = canvas.getContext('2d');
+let confetes = [], animando = false;
+const semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function ajustarCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+ajustarCanvas();
+window.addEventListener('resize', ajustarCanvas);
+
+function soltarConfete(){
+  if (semMovimento || animando) return;
+  const cores = ['#ffc531', '#ff5c7a', '#5fe3c8', '#f6ead2', '#7ec8ff'];
+  confetes = Array.from({ length: 130 }, () => ({
+    x: Math.random() * canvas.width,
+    y: -20 - Math.random() * canvas.height,
+    l: 6 + Math.random() * 8,
+    vy: 1.6 + Math.random() * 3,
+    vx: -1 + Math.random() * 2,
+    giro: Math.random() * Math.PI,
+    vGiro: -0.08 + Math.random() * 0.16,
+    cor: cores[Math.floor(Math.random() * cores.length)]
+  }));
+  animando = true;
+  const fim = Date.now() + 7000;
+
+  (function quadro(){
+    ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+    confetes.forEach(c => {
+      c.x += c.vx; c.y += c.vy; c.giro += c.vGiro;
+      if (c.y > canvas.height + 20) { c.y = -20; c.x = Math.random() * canvas.width; }
+      ctx2d.save();
+      ctx2d.translate(c.x, c.y);
+      ctx2d.rotate(c.giro);
+      ctx2d.fillStyle = c.cor;
+      ctx2d.fillRect(-c.l / 2, -c.l / 4, c.l, c.l / 2);
+      ctx2d.restore();
+    });
+    if (Date.now() < fim) requestAnimationFrame(quadro);
+    else { ctx2d.clearRect(0, 0, canvas.width, canvas.height); animando = false; }
+  })();
+}
+
+/* =========================================================
+   6. VER DE NOVO
+   ========================================================= */
+document.getElementById('btn-rever').addEventListener('click', () => {
+  telaRevelacao.classList.remove('ativa');
+  document.querySelectorAll('#tela-revelacao .cena').forEach(c => c.classList.remove('visivel'));
+  telaStreaming.style.display = '';
+  requestAnimationFrame(() => telaStreaming.classList.remove('saindo'));
+  window.scrollTo(0, 0);
+});
+</script>
+</body>
+</html>
